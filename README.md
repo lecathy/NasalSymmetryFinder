@@ -20,7 +20,7 @@ Windows CMD
 
 Powershell
 ```
-> $env:FLASK_APP = "hello"
+> $env:FLASK_APP = "flask_app"
 > flask run
 ```
 

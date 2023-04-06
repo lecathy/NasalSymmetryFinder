@@ -36,6 +36,34 @@ def upload_file():
         d.run(color='grey')
 
         return render_images()
+   
+   
+@app.route('/upload_api', methods = ['GET', 'POST'])
+def upload_file_api():
+   if request.method == 'POST':
+        f = request.files['file']
+        filename = f.filename
+        if filename != '':
+            file_ext = os.path.splitext(filename)[1]
+            if file_ext not in app.config['UPLOAD_EXTENSIONS']:
+                abort(400)
+        f.save('current.stl')
+        d = DorsumSymmetryFinder(image_path='current.stl', avg_path='avg_head.stl')
+        d.run(color='grey')
+
+        img_paths = ['plots\\birds-eye.png',
+              'plots\\centre.png',
+              'plots\\L-45.png',
+              'plots\\L-90.png',
+              'plots\\R-45.png',
+              'plots\\R-90.png',
+              'plots\\worms-eye.png'
+        ]
+        imgs = []
+        for img_path in img_paths:
+            imgs.append(return_img_stream(img_path))
+        return imgs
+   
         
 
 def return_img_stream(img_local_path):
